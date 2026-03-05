@@ -367,41 +367,116 @@
   .int-tag { display: inline-block; margin-top: 16px; font-size: 11px; font-weight: 700; letter-spacing: .1em; background: var(--plum); color: var(--white); padding: 4px 12px; border-radius: 100px; }
   .int-card.c2 .int-tag { background: var(--plum); }
 
-  /* ── RESPONSIVE UPDATES ── */
-  @media (max-width:1000px) {
-    .tl-monorail { margin-left: 48px; grid-template-columns: 1fr; }
-    .mosaic-inner { grid-template-columns: 1fr; }
-    .interest-grid { grid-template-columns: 1fr; }
-    .photo-mosaic { height: 280px; }
-  }
-  @media (max-width:620px) {
-    .tl-monorail { margin-left: 0; padding: 20px 16px; }
-    .highlight-strip { padding: 20px; }
-    .mosaic-section, .interest-section { padding-left: 20px; padding-right: 20px; }
+  /* ══════════════════════════════
+     MOBILE RESPONSIVE — Full overhaul
+  ══════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 12px 18px; }
+    .nav-logo { font-size: 18px; }
+    .nav-cta { font-size: 12px; padding: 8px 18px; }
+
+    /* HERO */
+    .hero { grid-template-columns: 1fr; padding: 90px 20px 48px; gap: 32px; min-height: auto; }
+    .hero::before { display: none; }
+    .hero-eyebrow { font-size: 10px; padding: 6px 14px; }
+    .hero-title .line1 { font-size: 22px; letter-spacing: .18em; }
+    .hero-title .your-first-big { font-size: clamp(58px, 16vw, 82px); }
+    .hero-title .adventure { font-size: clamp(50px, 14vw, 74px); }
+    .new-tag-strip { margin: 14px 0 4px; }
+    .nts-text { display: none; }
+    .hero-sub { font-size: 14px; margin: 12px 0 24px; }
+    .hero-stats { gap: 8px; }
+    .stat-chip { padding: 10px 14px; min-width: 84px; }
+    .stat-val { font-size: 20px; }
+    .hero-btns { gap: 10px; }
+    .btn-primary, .btn-secondary { font-size: 14px; padding: 13px 24px; }
+    .hero-visual { max-width: 100%; }
+    .main-img-card { aspect-ratio: 16/10; border-radius: 20px; }
+    .float-card { padding: 10px 14px; border-radius: 14px; }
+    .float-card.fc-date { top: 14px; left: 10px; }
+    .float-card.fc-free { bottom: 16px; right: 10px; }
+    .fc-icon { font-size: 22px; }
+    .fc-text strong { font-size: 12px; }
+    .fc-text small { font-size: 10px; }
+
+    /* ROUTE */
+    .route-section { padding: 60px 18px; }
+    .route-section::after { display: none; }
+    h2.sec-title { font-size: clamp(26px, 7vw, 38px); }
+    .sec-desc { font-size: 14px; }
+    .timeline-wrap { margin-top: 36px; }
+    .timeline-wrap::before { left: 18px; }
+    .tl-item { grid-template-columns: 48px 1fr; gap: 0 12px; }
+    .tl-dot-col { padding-top: 16px; }
+    .tl-dot { width: 36px; height: 36px; font-size: 15px; }
+    .tl-card { padding: 14px 16px; border-radius: 14px; margin-bottom: 8px; }
+    .tl-time { font-size: 10px; }
+    .tl-name { font-size: 15px; }
+    .tl-desc { font-size: 12px; }
+    .tl-walk { font-size: 10px; padding: 4px 0 4px 52px; }
+
+    /* MONORAIL */
+    .tl-monorail { margin-left: 0; grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; border-radius: 18px; }
+    .mono-photo-wrap { height: 130px; }
+    .mono-badge { font-size: 10px; padding: 4px 12px; margin-bottom: 8px; }
+    .mono-desc { font-size: 12px; }
+    .mono-facts { gap: 8px; }
+    .mono-fact { padding: 6px 10px; }
+    .mono-fact strong { font-size: 11px; }
+    .mono-fact small { font-size: 9px; }
+    .mf-icon { font-size: 15px; }
+    .mono-btn { font-size: 12px; padding: 8px 18px; }
+
+    /* SPOTS */
+    .spots-section { padding: 60px 18px; }
+    .spots-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .spot-name { font-size: 13px; }
+    .spot-desc { font-size: 11px; }
+
+    /* MOSAIC */
+    .mosaic-section { padding: 60px 18px; }
+    .mosaic-inner { grid-template-columns: 1fr; gap: 32px; }
+    .mosaic-text h2 { font-size: clamp(26px, 7vw, 38px); }
+    .mosaic-text p { font-size: 13px; }
+    .photo-mosaic { height: 220px; }
+
+    /* INTEREST */
+    .interest-section { padding: 60px 18px; }
+    .interest-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    .int-card { padding: 24px 20px; }
+    .int-icon { font-size: 30px; margin-bottom: 10px; }
+    .int-title { font-size: 18px; }
+    .int-desc { font-size: 13px; }
+    .int-num { font-size: 52px; }
+
+    /* INCLUDED */
+    .included-section { padding: 60px 18px; }
+    .inc-grid { grid-template-columns: 1fr; gap: 14px; }
+
+    /* REGISTER */
+    .register-section { padding: 60px 18px; }
+    .reg-headline { font-size: clamp(32px, 9vw, 48px); }
+    .event-strips { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .e-strip { padding: 14px; border-radius: 14px; }
+    .e-strip strong { font-size: 13px; }
+    .e-strip small { font-size: 10px; }
+    .reg-form { gap: 10px; }
+    .reg-input { padding: 14px 18px; font-size: 14px; }
+    .reg-submit { padding: 15px; font-size: 15px; }
+    .seats-counter { padding: 14px 24px; gap: 12px; border-radius: 18px; }
+    .seats-num { font-size: 44px; }
+
+    /* FOOTER */
+    footer { padding: 20px 18px; font-size: 10px; }
   }
 
-  footer { background:var(--ink); color:rgba(255,255,255,.3); text-align:center; padding:26px 48px; font-size:12px; letter-spacing:.06em; }
-  footer strong { color:rgba(255,255,255,.55); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width:1000px) {
-    .hero { grid-template-columns:1fr; min-height:auto; padding-top:100px; }
-    .hero-visual { max-width:480px; margin:0 auto; }
-    .spots-grid  { grid-template-columns:1fr 1fr; }
-    .lesson-inner{ grid-template-columns:1fr; gap:40px; }
-    .inc-grid    { grid-template-columns:1fr; }
-    .timeline-wrap::before { left:22px; }
-    .tl-item { grid-template-columns:48px 1fr; gap:0 16px; }
-    .tl-dot { width:36px; height:36px; font-size:16px; }
-  }
-  @media (max-width:620px) {
-    nav { padding:14px 20px; }
-    .hero, .route-section, .spots-section,
-    .lesson-section, .included-section, .register-section { padding-left:20px; padding-right:20px; }
-    .spots-grid { grid-template-columns:1fr 1fr; }
-    .hero::before { display:none; }
-    .float-card.fc-date { left:-10px; }
-    .float-card.fc-free { right:-10px; }
+  @media (max-width: 400px) {
+    .spots-grid { grid-template-columns: 1fr; }
+    .event-strips { grid-template-columns: 1fr; }
+    .hero-title .your-first-big { font-size: 52px; }
+    .hero-title .adventure { font-size: 46px; }
   }
 </style>
 </head>
