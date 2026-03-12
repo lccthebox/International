@@ -51,33 +51,46 @@
 
   /* ── TEAM BAR ── */
   .team-bar {
-    display: flex; align-items: center; justify-content: center;
-    gap: 20px; background: var(--ink); border-radius: 14px;
-    padding: 12px 24px; margin-bottom: 20px; flex-wrap: wrap;
+    display: flex; align-items: flex-start; justify-content: center;
+    gap: 16px; background: var(--ink); border-radius: 16px;
+    padding: 16px 24px; margin-bottom: 20px; flex-wrap: wrap;
   }
-  .team-field { display: flex; align-items: center; gap: 8px; }
-  .team-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; color: rgba(255,255,255,.5); text-transform: uppercase; white-space: nowrap; }
-  .team-line { height: 1px; background: rgba(255,255,255,.3); }
-  .team-line.long { width: 130px; }
-  .team-line.short { width: 70px; }
+  .team-field { display: flex; flex-direction: column; gap: 6px; }
+  .members-field { flex: 1; min-width: 180px; }
+  .team-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; color: rgba(255,255,255,.45); text-transform: uppercase; }
+
+  .team-input {
+    background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: 8px; color: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px 12px; outline: none; width: 160px;
+    transition: border-color .2s, background .2s;
+  }
+  .team-input.short { width: 90px; }
+  .team-input::placeholder { color: rgba(255,255,255,.25); font-weight: 400; }
+  .team-input:focus { border-color: var(--orange); background: rgba(255,107,53,.1); }
+
+  .members-inputs { display: flex; flex-direction: column; gap: 5px; }
+  .team-input.member { width: 100%; font-size: 12px; padding: 6px 12px; }
 
   /* ── BINGO GRID ── */
   .bingo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-width: 860px;
+    gap: 12px;
+    max-width: 960px;
     margin: 0 auto;
   }
 
   /* ── CELL ── */
   .bingo-cell {
     background: var(--white);
-    border-radius: 18px;
+    border-radius: 20px;
     border: 2.5px solid #e8e2d8;
     overflow: hidden;
     position: relative;
-    min-height: 190px;
+    min-height: clamp(200px, 28vw, 280px);
     display: flex; flex-direction: column;
     transition: transform .25s, box-shadow .25s, border-color .25s;
     user-select: none;
@@ -107,37 +120,37 @@
   /* cell content */
   .cell-body {
     position: relative; z-index: 2;
-    padding: 16px 14px 10px;
+    padding: 18px 16px 12px;
     display: flex; flex-direction: column;
     flex: 1;
   }
   .bc-num {
     font-family: 'Bebas Neue', cursive;
-    font-size: 48px; line-height: 1; color: var(--orange);
-    margin-bottom: 4px; transition: color .3s;
+    font-size: clamp(44px, 6vw, 64px); line-height: 1; color: var(--orange);
+    margin-bottom: 6px; transition: color .3s;
   }
   .bingo-cell.done .bc-num { color: rgba(255,255,255,.55); }
   .bc-mission {
-    font-size: 12px; font-weight: 600; line-height: 1.55;
+    font-size: clamp(12px, 1.6vw, 15px); font-weight: 600; line-height: 1.55;
     color: var(--ink); flex: 1; transition: color .3s;
   }
   .bingo-cell.done .bc-mission { color: var(--white); }
   .bc-location {
     display: inline-block; margin-top: 10px;
-    font-size: 9px; font-weight: 700; letter-spacing: .09em;
+    font-size: clamp(9px, 1.2vw, 11px); font-weight: 700; letter-spacing: .09em;
     text-transform: uppercase; background: rgba(255,107,53,.1);
-    color: var(--orange); padding: 3px 9px; border-radius: 100px;
+    color: var(--orange); padding: 4px 10px; border-radius: 100px;
     transition: background .3s, color .3s;
   }
   .bingo-cell.done .bc-location { background: rgba(255,255,255,.2); color: var(--white); }
 
   /* done checkmark badge */
   .done-check {
-    position: absolute; top: 10px; right: 10px; z-index: 4;
-    width: 28px; height: 28px; border-radius: 50%;
+    position: absolute; top: 12px; right: 12px; z-index: 4;
+    width: 32px; height: 32px; border-radius: 50%;
     background: var(--orange); color: white;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 900;
+    font-size: 16px; font-weight: 900;
     opacity: 0; transform: scale(0);
     transition: opacity .3s, transform .4s cubic-bezier(.34,1.56,.64,1);
     box-shadow: 0 3px 10px rgba(255,107,53,.5);
@@ -148,8 +161,8 @@
   .upload-label {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     background: var(--orange); color: var(--white);
-    font-size: 11px; font-weight: 700; letter-spacing: .04em;
-    padding: 9px 0; width: 100%; cursor: pointer;
+    font-size: clamp(12px, 1.6vw, 14px); font-weight: 700; letter-spacing: .04em;
+    padding: clamp(11px, 1.8vw, 14px) 0; width: 100%; cursor: pointer;
     transition: background .2s; position: relative; z-index: 3;
     margin-top: auto;
   }
@@ -159,8 +172,8 @@
   /* change photo (shown when done) */
   .change-label {
     display: none; align-items: center; justify-content: center; gap: 5px;
-    font-size: 10px; font-weight: 700; color: rgba(255,255,255,.75);
-    padding: 8px 0; width: 100%; cursor: pointer;
+    font-size: clamp(11px, 1.4vw, 13px); font-weight: 700; color: rgba(255,255,255,.75);
+    padding: clamp(10px, 1.6vw, 13px) 0; width: 100%; cursor: pointer;
     background: rgba(0,0,0,.3); position: relative; z-index: 3;
     margin-top: auto;
   }
@@ -234,14 +247,33 @@
   .toast.show { transform: translateX(-50%) translateY(0); }
 
   /* ── MOBILE ── */
-  @media (max-width: 500px) {
-    .bingo-grid { gap: 7px; }
-    .bingo-cell { min-height: 155px; border-radius: 14px; }
-    .bc-num { font-size: 36px; }
-    .bc-mission { font-size: 10px; }
-    .bc-location { font-size: 9px; }
+  @media (max-width: 600px) {
+    body { padding: 16px 10px 50px; }
+    .bingo-grid { gap: 8px; }
+    .bingo-cell { min-height: 0; aspect-ratio: 1 / 1.15; border-radius: 16px; }
+    .cell-body { padding: 12px 10px 8px; }
+    .bc-num { font-size: 36px; margin-bottom: 3px; }
+    .bc-mission { font-size: 11px; line-height: 1.45; }
+    .bc-location { font-size: 9px; padding: 3px 8px; margin-top: 6px; }
+    .done-check { width: 24px; height: 24px; font-size: 12px; top: 8px; right: 8px; }
+    .upload-label { font-size: 11px; padding: 10px 0; }
+    .change-label { font-size: 10px; padding: 9px 0; }
+    .bf-icon { font-size: 26px; }
+    .bf-title { font-size: 18px; }
+    .bf-mission { font-size: 10px; }
     .rules { grid-template-columns: 1fr; }
     .score-bar { flex-direction: row; }
+    .team-bar { gap: 12px; padding: 14px 16px; }
+    .team-input { width: 130px; font-size: 12px; }
+    .team-input.short { width: 80px; }
+    .members-field { min-width: 140px; }
+  }
+
+  @media (max-width: 380px) {
+    .bingo-cell { aspect-ratio: 1 / 1.2; }
+    .bc-num { font-size: 30px; }
+    .bc-mission { font-size: 10px; }
+    .upload-label { font-size: 10px; padding: 9px 0; }
   }
 </style>
 </head>
@@ -260,16 +292,22 @@
 <!-- TEAM BAR -->
 <div class="team-bar">
   <div class="team-field">
-    <div class="team-label">Team</div>
-    <div class="team-line long"></div>
+    <div class="team-label">Team Name</div>
+    <input class="team-input" type="text" placeholder="e.g. Tiger Team 🐯" id="inputTeam">
   </div>
   <div class="team-field">
     <div class="team-label">Date</div>
-    <div class="team-line short"></div>
+    <input class="team-input short" type="text" placeholder="Mar 15" id="inputDate">
   </div>
-  <div class="team-field">
+  <div class="team-field members-field">
     <div class="team-label">Members</div>
-    <div class="team-line long"></div>
+    <div class="members-inputs">
+      <input class="team-input member" type="text" placeholder="Name 1">
+      <input class="team-input member" type="text" placeholder="Name 2">
+      <input class="team-input member" type="text" placeholder="Name 3">
+      <input class="team-input member" type="text" placeholder="Name 4">
+      <input class="team-input member" type="text" placeholder="Name 5">
+    </div>
   </div>
 </div>
 
