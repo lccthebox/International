@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walk Daegu — Round 2 · Free City Tour</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --apple:   #ffe5b0; --apple-d: #ffb830;
+    --plum:    #c85000; --plum-l:  #f07030;
+    --ink:     #1c1420; --cream:   #fffaf4;
+    --peach:   #fff0d8; --sky:     #e0f0ff;
+    --coral:   #ff4500; --white:   #ffffff;
+    --mid:     #8a7060;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--ink); overflow-x:hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 48px;
+    background:rgba(253,250,244,.92); backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(107,63,160,.1);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(107,63,160,.12); }
+  .nav-logo { font-family:'Bebas Neue',cursive; font-size:22px; letter-spacing:.1em; color:var(--plum); display:flex; align-items:center; gap:10px; }
+  .nav-logo .tag { background:var(--apple); color:var(--plum); padding:3px 12px; font-size:12px; letter-spacing:.07em; border-radius:100px; font-family:'DM Sans',sans-serif; font-weight:700; }
+  .nav-cta { background:var(--plum); color:var(--white); border:none; font-family:'DM Sans',sans-serif; font-weight:700; font-size:13px; letter-spacing:.04em; padding:10px 24px; cursor:pointer; border-radius:100px; transition:background .2s, transform .2s; }
+  .nav-cta:hover { background:var(--plum-l); transform:scale(1.04); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height:100vh; padding:120px 48px 80px;
+    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+    position:relative; overflow:hidden; background:var(--cream);
+  }
+  .hero::before {
+    content:'대구'; position:absolute; right:-60px; bottom:-80px;
+    font-family:'Bebas Neue',cursive; font-size:420px;
+    color:rgba(107,63,160,.055); line-height:1; pointer-events:none; z-index:0;
+  }
+  .blob1 { position:absolute; width:560px; height:560px; background:radial-gradient(circle,var(--apple) 0%,transparent 68%); border-radius:50%; top:-160px; right:60px; opacity:.6; pointer-events:none; animation:drift 9s ease-in-out infinite alternate; }
+  .blob2 { position:absolute; width:320px; height:320px; background:radial-gradient(circle,var(--plum-l) 0%,transparent 70%); border-radius:50%; bottom:80px; left:25%; opacity:.15; pointer-events:none; animation:drift 12s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(22px,28px) scale(1.07);} }
+
+  .hero-content { position:relative; z-index:2; }
+
+  .hero-eyebrow {
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--apple); color:var(--plum); font-weight:700; font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; padding:8px 18px; border-radius:100px; margin-bottom:24px;
+    opacity:0; animation:popIn .6s .1s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes popIn { from{transform:translateY(18px) scale(.95);opacity:0;} to{transform:translateY(0) scale(1);opacity:1;} }
+
+  .hero-title { line-height:1.0; opacity:0; animation:popIn .7s .25s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .hero-title .line1 { display:block; font-family:'Bebas Neue',cursive; font-weight:400; font-size:clamp(28px,3.2vw,48px); letter-spacing:.22em; color:var(--plum-l); text-transform:uppercase; margin-bottom:0; }
+  .hero-title .your-first-big { display:block; font-family:'Bebas Neue',cursive; font-size:clamp(82px,9vw,138px); letter-spacing:.03em; color:var(--ink); line-height:.92; }
+  .hero-title .accent { display:block; font-family:'Bebas Neue',cursive; font-size:clamp(82px,9vw,138px); letter-spacing:.03em; color:var(--plum); line-height:.92; }
+  .hero-title .adventure { display:block; font-family:'Bebas Neue',cursive; font-size:clamp(82px,9vw,138px); letter-spacing:.03em; background:linear-gradient(100deg,var(--ink) 30%,var(--plum-l) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:.92; }
+
+  .new-tag-strip { display:inline-flex; align-items:center; gap:12px; background:var(--ink); border-radius:100px; padding:8px; margin:18px 0 6px; opacity:0; animation:popIn .6s .38s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .nts-badge { background:var(--coral); color:var(--white); font-size:11px; font-weight:800; letter-spacing:.1em; padding:5px 14px; border-radius:100px; white-space:nowrap; }
+  .nts-text { color:rgba(255,255,255,.8); font-size:13px; font-weight:500; padding-right:10px; white-space:nowrap; }
+
+  .hero-sub { font-size:16px; line-height:1.8; color:var(--mid); max-width:440px; margin:16px 0 34px; font-weight:300; opacity:0; animation:popIn .6s .45s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+  .hero-stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:34px; opacity:0; animation:popIn .6s .6s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .stat-chip { display:flex; flex-direction:column; background:var(--white); border:1.5px solid rgba(107,63,160,.13); border-radius:14px; padding:14px 18px; gap:2px; min-width:104px; transition:border-color .2s, transform .2s, box-shadow .2s; cursor:default; }
+  .stat-chip:hover { border-color:var(--plum-l); transform:translateY(-4px); box-shadow:0 10px 28px rgba(107,63,160,.14); }
+  .stat-val { font-family:'Fraunces',serif; font-weight:900; font-size:26px; color:var(--plum); line-height:1; }
+  .stat-label { font-size:11px; color:var(--mid); font-weight:500; }
+
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; opacity:0; animation:popIn .6s .75s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .btn-primary { background:var(--plum); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; padding:16px 34px; border:none; border-radius:100px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:background .2s, transform .2s, box-shadow .2s; }
+  .btn-primary:hover { background:var(--plum-l); transform:scale(1.04); box-shadow:0 14px 36px rgba(107,63,160,.35); }
+  .btn-secondary { background:transparent; color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; padding:16px 26px; border:1.5px solid rgba(28,20,32,.2); border-radius:100px; cursor:pointer; transition:border-color .2s, color .2s, transform .2s; }
+  .btn-secondary:hover { border-color:var(--plum); color:var(--plum); transform:scale(1.03); }
+
+  .hero-visual { position:relative; z-index:2; opacity:0; animation:popIn .8s .3s cubic-bezier(.34,1.56,.64,1) forwards; }
+  .main-img-card { border-radius:28px; overflow:hidden; aspect-ratio:4/5; background:linear-gradient(135deg,#d8cce8,#b8aad8); position:relative; box-shadow:0 36px 88px rgba(107,63,160,.24); }
+  .main-img-card img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease; }
+  .main-img-card:hover img { transform:scale(1.04); }
+
+  .float-card { position:absolute; background:var(--white); border-radius:18px; padding:14px 20px; box-shadow:0 8px 36px rgba(28,20,32,.13); display:flex; align-items:center; gap:12px; }
+  .float-card.fc-date { top:28px; left:-32px; animation:floatY 4s ease-in-out infinite; }
+  .float-card.fc-free { bottom:52px; right:-28px; animation:floatY 5s 1.2s ease-in-out infinite; }
+  @keyframes floatY { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+  .fc-icon { font-size:30px; }
+  .fc-text strong { display:block; font-size:14px; font-weight:700; color:var(--ink); }
+  .fc-text small  { font-size:11px; color:var(--mid); }
+
+  /* stripe */
+  .stripe { height:6px; background:linear-gradient(90deg,var(--apple) 0%,var(--apple-d) 40%,var(--plum-l) 100%); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity:0; transform:translateY(40px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-left  { opacity:0; transform:translateX(-40px); transition:opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-right { opacity:0; transform:translateX(40px);  transition:opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-left.visible, .reveal-right.visible { opacity:1; transform:translateX(0); }
+  .delay-1 { transition-delay:.1s; }
+  .delay-2 { transition-delay:.2s; }
+  .delay-3 { transition-delay:.3s; }
+  .delay-4 { transition-delay:.4s; }
+  .delay-5 { transition-delay:.5s; }
+
+  /* ── SECTION COMMON ── */
+  .section-tag { display:inline-flex; align-items:center; gap:6px; background:var(--plum); color:var(--white); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; padding:6px 16px; border-radius:100px; margin-bottom:16px; }
+  h2.sec-title { font-family:'Fraunces',serif; font-weight:900; font-size:clamp(32px,4vw,52px); line-height:1.12; margin-bottom:12px; }
+  .sec-desc { color:var(--mid); font-size:16px; line-height:1.8; max-width:520px; font-weight:300; }
+
+  /* ── ROUTE (interactive timeline) ── */
+  .route-section { padding:100px 48px; background:var(--white); position:relative; overflow:hidden; }
+  .route-section::after { content:'ROUTE'; position:absolute; right:-24px; top:40px; font-family:'Bebas Neue',cursive; font-size:180px; color:rgba(107,63,160,.04); letter-spacing:.12em; pointer-events:none; }
+
+  /* vertical interactive timeline */
+  .timeline-wrap { margin-top:60px; position:relative; }
+  .timeline-wrap::before { content:''; position:absolute; left:44px; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--apple-d),var(--plum-l)); border-radius:10px; }
+
+  .tl-item {
+    display:grid; grid-template-columns:90px 1fr; gap:0 28px;
+    margin-bottom:8px; cursor:pointer;
+  }
+  .tl-dot-col { display:flex; flex-direction:column; align-items:center; padding-top:20px; }
+  .tl-dot {
+    width:46px; height:46px; border-radius:50%;
+    background:var(--white); border:3px solid rgba(107,63,160,.2);
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; flex-shrink:0; z-index:1; position:relative;
+    transition:border-color .3s, transform .3s, box-shadow .3s;
+    box-shadow:0 2px 12px rgba(107,63,160,.08);
+  }
+  .tl-item:hover .tl-dot, .tl-item.active .tl-dot {
+    border-color:var(--plum); transform:scale(1.18);
+    box-shadow:0 6px 24px rgba(107,63,160,.25);
+  }
+  .tl-item.start .tl-dot  { background:var(--apple); border-color:var(--apple-d); }
+  .tl-item.mission .tl-dot{ background:#fff3ef; border-color:var(--coral); }
+  .tl-item.finish .tl-dot { background:var(--apple); border-color:var(--apple-d); }
+
+  .tl-card {
+    background:var(--cream); border-radius:18px; padding:20px 24px;
+    border:2px solid transparent; margin-bottom:12px;
+    transition:border-color .3s, background .3s, transform .3s, box-shadow .3s;
+  }
+  .tl-item:hover .tl-card, .tl-item.active .tl-card {
+    border-color:var(--plum-l); background:var(--white);
+    transform:translateX(6px); box-shadow:0 8px 32px rgba(107,63,160,.12);
+  }
+  .tl-item.start .tl-card  { border-color:var(--apple-d); background:rgba(232,245,176,.4); }
+  .tl-item.mission .tl-card{ border-color:rgba(255,107,74,.3); background:rgba(255,243,239,.6); }
+  .tl-item.finish .tl-card { border-color:var(--apple-d); background:rgba(232,245,176,.4); }
+
+  .tl-time { font-size:11px; font-weight:700; color:var(--plum); letter-spacing:.1em; text-transform:uppercase; margin-bottom:4px; }
+  .tl-name { font-family:'Fraunces',serif; font-weight:700; font-size:18px; color:var(--ink); margin-bottom:4px; }
+  .tl-desc { font-size:13px; color:var(--mid); line-height:1.6; }
+  .tl-badge { display:inline-block; font-size:10px; font-weight:700; padding:3px 10px; border-radius:100px; letter-spacing:.07em; margin-top:8px; background:rgba(107,63,160,.1); color:var(--plum); }
+  .tl-item.mission .tl-badge { background:rgba(255,107,74,.15); color:var(--coral); }
+  .tl-item.finish  .tl-badge { background:var(--apple); color:var(--plum); }
+
+  /* detail panel */
+  .tl-detail {
+    max-height:0; overflow:hidden;
+    transition:max-height .45s cubic-bezier(.16,1,.3,1), opacity .3s;
+    opacity:0;
+  }
+  .tl-item.active .tl-detail { max-height:200px; opacity:1; }
+  .tl-detail-inner { padding:12px 0 4px; font-size:13px; color:var(--mid); line-height:1.75; border-top:1px dashed rgba(107,63,160,.15); margin-top:10px; }
+  .tl-detail-inner strong { color:var(--plum); }
+
+  /* walk indicator */
+  .tl-walk { display:flex; align-items:center; gap:8px; padding:6px 0 6px 0; font-size:11px; color:var(--mid); font-weight:500; }
+  .tl-walk::before { content:'↓'; color:var(--plum-l); font-size:14px; }
+
+  /* ── SPOTS GRID ── */
+  .spots-section { padding:100px 48px; background:var(--cream); }
+  .spots-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:16px; margin-top:56px; }
+  .spot-card { border-radius:20px; overflow:hidden; background:var(--white); border:1.5px solid rgba(107,63,160,.08); transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s; cursor:pointer; }
+  .spot-card:hover { transform:translateY(-12px) rotate(.4deg); box-shadow:0 28px 64px rgba(107,63,160,.2); }
+  .spot-img { width:100%; aspect-ratio:3/4; overflow:hidden; background:linear-gradient(135deg,#e0d8f0,#c8bce0); position:relative; }
+  .spot-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .55s; }
+  .spot-card:hover .spot-img img { transform:scale(1.1); }
+  .spot-label { position:absolute; top:12px; left:12px; background:var(--plum); color:var(--white); font-size:10px; font-weight:700; padding:4px 10px; border-radius:100px; letter-spacing:.08em; }
+  .spot-body { padding:16px; }
+  .spot-name { font-family:'Fraunces',serif; font-weight:700; font-size:14px; color:var(--ink); margin-bottom:6px; line-height:1.3; }
+  .spot-desc { font-size:11.5px; color:var(--mid); line-height:1.7; }
+
+  /* ── KOREAN LESSON ── */
+  .lesson-section { padding:100px 48px; background:linear-gradient(140deg,var(--apple) 0%,#f2fbcc 55%,var(--sky) 100%); position:relative; overflow:hidden; }
+  .lesson-section::before { content:'한국어'; position:absolute; right:-40px; bottom:-60px; font-family:'Bebas Neue',cursive; font-size:320px; color:rgba(107,63,160,.07); pointer-events:none; line-height:1; }
+  .lesson-inner { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; position:relative; z-index:1; }
+  .lesson-badges { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+  .badge-pill { background:var(--white); border-radius:12px; padding:10px 16px; font-size:13px; font-weight:600; color:var(--plum); box-shadow:0 4px 16px rgba(107,63,160,.1); transition:transform .2s; }
+  .badge-pill:hover { transform:translateY(-2px); }
+  .phrases { display:flex; flex-direction:column; gap:12px; }
+  .phrase { background:var(--white); border-radius:16px; padding:16px 20px; display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; box-shadow:0 4px 18px rgba(107,63,160,.08); transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s; border:1.5px solid rgba(107,63,160,.06); cursor:default; }
+  .phrase:hover { transform:translateX(8px) scale(1.02); box-shadow:0 10px 36px rgba(107,63,160,.16); }
+  .phrase-kr { font-family:'Fraunces',serif; font-weight:700; font-size:21px; color:var(--plum); min-width:130px; }
+  .phrase-info { display:flex; flex-direction:column; gap:2px; }
+  .phrase-rom { font-size:11.5px; color:var(--mid); font-style:italic; }
+  .phrase-en  { font-size:14px; font-weight:600; color:var(--ink); }
+  .phrase-use { font-size:10px; background:var(--apple); color:var(--plum); font-weight:700; padding:4px 10px; border-radius:100px; letter-spacing:.06em; white-space:nowrap; }
+
+  /* ── INCLUDED ── */
+  .included-section { padding:100px 48px; background:var(--white); }
+  .inc-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:56px; max-width:860px; }
+  .inc-card { border-radius:24px; padding:36px; border:2px solid transparent; transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
+  .inc-card:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 24px 56px rgba(107,63,160,.14); }
+  .inc-card.free { background:var(--apple); border-color:var(--apple-d); }
+  .inc-card.own  { background:var(--peach); border-color:#f5d0a8; }
+  .inc-head { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+  .inc-emoji { font-size:34px; }
+  .inc-title { font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:var(--ink); }
+  .inc-subtitle { font-size:12px; color:var(--mid); font-weight:500; margin-top:2px; }
+  .inc-items { list-style:none; display:flex; flex-direction:column; gap:12px; }
+  .inc-items li { display:flex; align-items:center; gap:12px; font-size:15px; color:var(--ink); transition:transform .2s; }
+  .inc-items li:hover { transform:translateX(4px); }
+  .inc-items li::before { content:attr(data-ico); font-size:20px; flex-shrink:0; }
+
+  /* ── REGISTER ── */
+  .register-section { padding:100px 48px; background:var(--plum); position:relative; overflow:hidden; text-align:center; }
+  .register-section::before { content:'대구'; position:absolute; left:50%; bottom:-100px; transform:translateX(-50%); font-family:'Bebas Neue',cursive; font-size:460px; color:rgba(255,255,255,.04); pointer-events:none; }
+
+  /* animated counter seats */
+  .seats-counter {
+    display:inline-flex; align-items:center; gap:16px;
+    background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2);
+    border-radius:100px; padding:12px 28px; margin-bottom:32px;
+  }
+  .seats-num { font-family:'Fraunces',serif; font-weight:900; font-size:36px; color:var(--apple); line-height:1; }
+  .seats-label { color:rgba(255,255,255,.7); font-size:14px; line-height:1.4; text-align:left; }
+  .seats-label strong { color:var(--white); display:block; }
+
+  .register-section .section-tag { background:var(--apple); color:var(--plum); }
+  .reg-headline { font-family:'Fraunces',serif; font-weight:900; font-size:clamp(38px,5.5vw,68px); line-height:1.08; color:var(--white); margin-bottom:16px; }
+  .reg-headline em { color:var(--apple); font-style:italic; }
+  .reg-sub { color:rgba(255,255,255,.6); font-size:16px; max-width:460px; margin:0 auto 48px; font-weight:300; line-height:1.8; }
+  .event-strips { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-bottom:48px; position:relative; z-index:1; }
+  .e-strip { background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.18); border-radius:16px; padding:18px 24px; display:flex; flex-direction:column; gap:4px; min-width:140px; backdrop-filter:blur(8px); transition:background .2s, transform .3s cubic-bezier(.34,1.56,.64,1); }
+  .e-strip:hover { background:rgba(255,255,255,.18); transform:scale(1.08) translateY(-4px); }
+  .e-strip .ev { font-size:24px; margin-bottom:4px; }
+  .e-strip strong { color:var(--white); font-size:15px; font-weight:700; }
+  .e-strip small  { color:rgba(255,255,255,.5); font-size:12px; }
+  .reg-form { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; max-width:580px; margin:0 auto 24px; position:relative; z-index:1; }
+  .reg-input { flex:1; min-width:200px; background:rgba(255,255,255,.12); border:1.5px solid rgba(255,255,255,.2); color:var(--white); font-family:'DM Sans',sans-serif; font-size:14px; padding:15px 22px; border-radius:100px; outline:none; transition:border-color .2s, background .2s; }
+  .reg-input::placeholder { color:rgba(255,255,255,.35); }
+  .reg-input:focus { border-color:var(--apple); background:rgba(255,255,255,.18); }
+  .reg-submit { background:var(--apple); color:var(--ink); border:none; font-family:'DM Sans',sans-serif; font-weight:700; font-size:15px; padding:15px 36px; border-radius:100px; cursor:pointer; white-space:nowrap; transition:background .2s, transform .2s, box-shadow .2s; }
+  .reg-submit:hover { background:var(--apple-d); transform:scale(1.06); box-shadow:0 14px 36px rgba(200,224,96,.5); }
+  .reg-footnote { color:rgba(255,255,255,.4); font-size:12px; line-height:2; position:relative; z-index:1; }
+  .reg-footnote strong { color:rgba(255,255,255,.7); }
+
+  /* submit success state */
+  .reg-submit.success { background:#4caf78; color:var(--white); }
+
+  /* progress bar on page */
+  .progress-bar { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--apple-d),var(--plum)); z-index:200; transition:width .1s linear; width:0%; }
+
+  /* ── MONORAIL CARD ── */
+  .tl-monorail {
+    margin: 4px 0 4px 90px;
+    background: linear-gradient(135deg, #1c1420 0%, #2d1a50 60%, #3d2460 100%);
+    border-radius: 24px; padding: 28px 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .tl-monorail::before {
+    content: '대구 3호선';
+    position: absolute; right: -10px; top: -20px;
+    font-family: 'Bebas Neue', cursive; font-size: 80px;
+    color: rgba(200,224,96,.06); pointer-events: none;
+  }
+  .mono-photo-wrap { position:relative; border-radius:16px; overflow:hidden; height:170px; }
+  .mono-bg-photo { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.55); }
+  .mono-overlay-dark { position:absolute; inset:0; background:linear-gradient(to top, rgba(28,20,50,.85) 0%, rgba(28,20,50,.2) 60%); }
+  .mono-line-top { position:absolute; top:14px; left:14px; }
+  .mono-line-badge { background:var(--apple); color:var(--ink); font-size:11px; font-weight:800; padding:5px 14px; border-radius:100px; letter-spacing:.07em; }
+  .mono-anim-row { position:absolute; bottom:0; left:0; right:0; padding:0 16px 16px; display:flex; align-items:center; gap:10px; }
+  .mono-st-label { font-size:11px; font-weight:700; color:var(--white); line-height:1.4; white-space:nowrap; flex-shrink:0; }
+  .mono-st-label span { display:block; font-weight:400; color:rgba(255,255,255,.5); font-size:9px; }
+  .mono-st-label.right { text-align:right; }
+  .mono-anim-track { flex:1; position:relative; height:32px; display:flex; align-items:center; }
+  .mono-anim-rail { position:absolute; left:0; right:0; height:3px; background:linear-gradient(90deg,rgba(200,224,96,.3),var(--apple-d),rgba(200,224,96,.3)); border-radius:10px; }
+  .mono-anim-train { position:absolute; font-size:22px; left:5%; animation:trainRide 3s ease-in-out infinite alternate; filter:drop-shadow(0 2px 8px rgba(0,0,0,.4)); line-height:1; }
+  @keyframes trainRide { from{left:5%;} to{left:72%;} }
+  .mono-anim-train.zoom { animation:trainZoom .7s cubic-bezier(.25,.46,.45,.94) forwards; }
+  @keyframes trainZoom { 0%{left:5%;opacity:1;} 80%{left:105%;opacity:1;} 100%{left:105%;opacity:0;} }
+  .mono-info {}
+  .mono-badge {
+    display: inline-block; background: var(--apple); color: var(--ink);
+    font-size: 11px; font-weight: 800; letter-spacing: .1em;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 12px;
+  }
+  .mono-desc { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 16px; }
+  .mono-desc strong { color: var(--apple); }
+  .mono-facts { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .mono-fact { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.07); border-radius: 12px; padding: 8px 12px; }
+  .mf-icon { font-size: 18px; }
+  .mono-fact strong { display: block; font-size: 12px; color: var(--white); }
+  .mono-fact small  { font-size: 10px; color: rgba(255,255,255,.45); }
+  .mono-btn {
+    background: var(--apple); color: var(--ink); border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 13px;
+    padding: 10px 22px; border-radius: 100px;
+    transition: background .2s, transform .2s; display: inline-block;
+  }
+  .mono-btn:hover { background: var(--apple-d); transform: scale(1.05); }
+
+  /* ── HIGHLIGHT STRIP (fun facts between sections) ── */
+  .highlight-strip {
+    background: var(--plum); color: var(--white);
+    padding: 28px 48px; overflow: hidden; position: relative;
+  }
+  .hl-track {
+    display: flex; gap: 48px; width: max-content;
+    animation: hlScroll 22s linear infinite;
+  }
+  .highlight-strip:hover .hl-track { animation-play-state: paused; }
+  @keyframes hlScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .hl-item { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 14px; font-weight: 500; opacity: .85; }
+  .hl-item strong { color: var(--apple); font-weight: 800; }
+  .hl-sep { color: rgba(255,255,255,.2); font-size: 20px; }
+
+  /* ── PHOTO MOSAIC SECTION ── */
+  .mosaic-section { padding: 100px 48px; background: var(--ink); position: relative; overflow: hidden; }
+  .mosaic-section::before { content: 'DAEGU'; position: absolute; left: -20px; top: 50%; transform: translateY(-50%); font-family: 'Bebas Neue', cursive; font-size: 300px; color: rgba(255,255,255,.02); pointer-events: none; line-height: 1; }
+  .mosaic-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .mosaic-text .section-tag { background: var(--apple); color: var(--plum); }
+  .mosaic-text h2 { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(32px,4vw,52px); color: var(--white); line-height: 1.1; margin-bottom: 16px; }
+  .mosaic-text h2 em { color: var(--apple); font-style: italic; }
+  .mosaic-text p { color: rgba(255,255,255,.55); font-size: 15px; line-height: 1.8; font-weight: 300; }
+
+  .photo-mosaic { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; border-radius: 20px; overflow: hidden; height: 400px; }
+  .mosaic-img { overflow: hidden; position: relative; cursor: pointer; }
+  .mosaic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.25,.46,.45,.94), filter .4s; filter: brightness(.85); display: block; }
+  .mosaic-img:hover img { transform: scale(1.1); filter: brightness(1.05); }
+  .mosaic-img .m-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(107,63,160,.6) 0%, transparent 60%); opacity: 0; transition: opacity .3s; display: flex; align-items: flex-end; padding: 14px; }
+  .mosaic-img:hover .m-overlay { opacity: 1; }
+  .m-overlay span { color: var(--white); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .mosaic-img.big { grid-row: span 2; }
+
+  /* ── WHY DAEGU? INTEREST CARDS ── */
+  .interest-section { padding: 100px 48px; background: var(--cream); }
+  .interest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+  .int-card {
+    border-radius: 24px; padding: 36px 28px; position: relative; overflow: hidden;
+    cursor: pointer; transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s;
+    border: 2px solid transparent;
+  }
+  .int-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 28px 64px rgba(0,0,0,.12); border-color: var(--plum-l); }
+  .int-card.c1 { background: linear-gradient(135deg, #f5f0ff, #e8dff8); }
+  .int-card.c2 { background: linear-gradient(135deg, var(--apple), #d8f0a0); }
+  .int-card.c3 { background: linear-gradient(135deg, #fff0eb, var(--peach)); }
+  .int-num { font-family: 'Bebas Neue', cursive; font-size: 72px; color: rgba(107,63,160,.1); line-height: 1; position: absolute; top: 10px; right: 16px; }
+  .int-icon { font-size: 40px; margin-bottom: 16px; }
+  .int-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; color: var(--ink); margin-bottom: 10px; }
+  .int-desc { font-size: 14px; color: var(--mid); line-height: 1.75; }
+  .int-tag { display: inline-block; margin-top: 16px; font-size: 11px; font-weight: 700; letter-spacing: .1em; background: var(--plum); color: var(--white); padding: 4px 12px; border-radius: 100px; }
+  .int-card.c2 .int-tag { background: var(--plum); }
+
+  /* ══════════════════════════════
+     MOBILE RESPONSIVE — Full overhaul
+  ══════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 12px 18px; }
+    .nav-logo { font-size: 18px; }
+    .nav-cta { font-size: 12px; padding: 8px 18px; }
+
+    /* HERO */
+    .hero { grid-template-columns: 1fr; padding: 90px 20px 48px; gap: 32px; min-height: auto; }
+    .hero::before { display: none; }
+    .hero-eyebrow { font-size: 10px; padding: 6px 14px; }
+    .hero-title .line1 { font-size: 22px; letter-spacing: .18em; }
+    .hero-title .your-first-big { font-size: clamp(58px, 16vw, 82px); }
+    .hero-title .adventure { font-size: clamp(50px, 14vw, 74px); }
+    .new-tag-strip { margin: 14px 0 4px; }
+    .nts-text { display: none; }
+    .hero-sub { font-size: 14px; margin: 12px 0 24px; }
+    .hero-stats { gap: 8px; }
+    .stat-chip { padding: 10px 14px; min-width: 84px; }
+    .stat-val { font-size: 20px; }
+    .hero-btns { gap: 10px; }
+    .btn-primary, .btn-secondary { font-size: 14px; padding: 13px 24px; }
+    .hero-visual { max-width: 100%; }
+    .main-img-card { aspect-ratio: 16/10; border-radius: 20px; }
+    .float-card { padding: 10px 14px; border-radius: 14px; }
+    .float-card.fc-date { top: 14px; left: 10px; }
+    .float-card.fc-free { bottom: 16px; right: 10px; }
+    .fc-icon { font-size: 22px; }
+    .fc-text strong { font-size: 12px; }
+    .fc-text small { font-size: 10px; }
+
+    /* ROUTE */
+    .route-section { padding: 60px 18px; }
+    .route-section::after { display: none; }
+    h2.sec-title { font-size: clamp(26px, 7vw, 38px); }
+    .sec-desc { font-size: 14px; }
+    .timeline-wrap { margin-top: 36px; }
+    .timeline-wrap::before { left: 18px; }
+    .tl-item { grid-template-columns: 48px 1fr; gap: 0 12px; }
+    .tl-dot-col { padding-top: 16px; }
+    .tl-dot { width: 36px; height: 36px; font-size: 15px; }
+    .tl-card { padding: 14px 16px; border-radius: 14px; margin-bottom: 8px; }
+    .tl-time { font-size: 10px; }
+    .tl-name { font-size: 15px; }
+    .tl-desc { font-size: 12px; }
+    .tl-walk { font-size: 10px; padding: 4px 0 4px 52px; }
+
+    /* MONORAIL */
+    .tl-monorail { margin-left: 0; grid-template-columns: 1fr; gap: 16px; padding: 20px 16px; border-radius: 18px; }
+    .mono-photo-wrap { height: 130px; }
+    .mono-badge { font-size: 10px; padding: 4px 12px; margin-bottom: 8px; }
+    .mono-desc { font-size: 12px; }
+    .mono-facts { gap: 8px; }
+    .mono-fact { padding: 6px 10px; }
+    .mono-fact strong { font-size: 11px; }
+    .mono-fact small { font-size: 9px; }
+    .mf-icon { font-size: 15px; }
+    .mono-btn { font-size: 12px; padding: 8px 18px; }
+
+    /* SPOTS */
+    .spots-section { padding: 60px 18px; }
+    .spots-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .spot-name { font-size: 13px; }
+    .spot-desc { font-size: 11px; }
+
+    /* MOSAIC */
+    .mosaic-section { padding: 60px 18px; }
+    .mosaic-inner { grid-template-columns: 1fr; gap: 32px; }
+    .mosaic-text h2 { font-size: clamp(26px, 7vw, 38px); }
+    .mosaic-text p { font-size: 13px; }
+    .photo-mosaic { height: 220px; }
+
+    /* INTEREST */
+    .interest-section { padding: 60px 18px; }
+    .interest-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+    .int-card { padding: 24px 20px; }
+    .int-icon { font-size: 30px; margin-bottom: 10px; }
+    .int-title { font-size: 18px; }
+    .int-desc { font-size: 13px; }
+    .int-num { font-size: 52px; }
+
+    /* INCLUDED */
+    .included-section { padding: 60px 18px; }
+    .inc-grid { grid-template-columns: 1fr; gap: 14px; }
+
+    /* REGISTER */
+    .register-section { padding: 60px 18px; }
+    .reg-headline { font-size: clamp(32px, 9vw, 48px); }
+    .event-strips { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .e-strip { padding: 14px; border-radius: 14px; }
+    .e-strip strong { font-size: 13px; }
+    .e-strip small { font-size: 10px; }
+    .reg-form { gap: 10px; }
+    .reg-input { padding: 14px 18px; font-size: 14px; }
+    .reg-submit { padding: 15px; font-size: 15px; }
+    .seats-counter { padding: 14px 24px; gap: 12px; border-radius: 18px; }
+    .seats-num { font-size: 44px; }
+
+    /* FOOTER */
+    footer { padding: 20px 18px; font-size: 10px; }
+  }
+
+  @media (max-width: 400px) {
+    .spots-grid { grid-template-columns: 1fr; }
+    .event-strips { grid-template-columns: 1fr; }
+    .hero-title .your-first-big { font-size: 52px; }
+    .hero-title .adventure { font-size: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">Walk <span class="tag">대구 DAEGU</span></div>
+  <button class="nav-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Join Free →</button>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">🔁 Round 2 is here — don't miss it!</div>
+    <h1 class="hero-title">
+      <span class="line1">Your Next</span>
+      <span class="your-first-big">Daegu</span>
+      <span class="adventure">Adventure</span>
+    </h1>
+    <div class="new-tag-strip">
+      <span class="nts-badge">🔁 ROUND 2</span>
+      <span class="nts-text">Round 1 sold out. Don't miss Round 2.</span>
+    </div>
+    <p class="hero-sub">
+      Round 1 sold out in days — so we're back for more!
+      Same route, same energy, brand new crew. Survival Korean,
+      Seomun Market missions, Gyesan Cathedral, and historic hanoks.
+      <strong style="color:var(--plum)">Free Korean class. Free tour. Only 10 spots.</strong></strong>
+    </p>
+    <div class="hero-stats">
+      <div class="stat-chip"><span class="stat-val">FREE</span><span class="stat-label">No cost to join</span></div>
+      <div class="stat-chip"><span class="stat-val">10</span><span class="stat-label">Spots only</span></div>
+      <div class="stat-chip"><span class="stat-val">4h</span><span class="stat-label">3–7 PM</span></div>
+      <div class="stat-chip"><span class="stat-val">Mar 29</span><span class="stat-label">Round 2</span></div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">Reserve My Spot 🎉</button>
+      <button class="btn-secondary" onclick="document.getElementById('route').scrollIntoView({behavior:'smooth'})">See the route ↓</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="main-img-card">
+      <img src="hero2nd.jpg" alt="Daegu">
+    </div>
+    <div class="float-card fc-date">
+      <div class="fc-icon">📅</div>
+      <div class="fc-text"><strong>March 29 · 3:00 PM</strong><small>Meet at TheBox</small></div>
+    </div>
+    <div class="float-card fc-free">
+      <div class="fc-icon">🆓</div>
+      <div class="fc-text"><strong>Completely Free</strong><small>Tour + Korean lesson</small></div>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<!-- ════════════════ ROUTE TIMELINE ════════════════ -->
+<section class="route-section" id="route">
+  <div style="max-width:860px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-tag">🗺️ Round 2 Route</div>
+      <h2 class="sec-title">4 Hours · 6 Stops<br>3 PM → 7 PM</h2>
+      <p class="sec-desc">Click each stop to see details. Korean survival class → Seomun Market mission → Gothic cathedral → historic hanoks → Dongseongno → surprise gift.</p>
+    </div>
+
+    <div class="timeline-wrap">
+
+      <div class="tl-item start reveal delay-1" onclick="toggleTL(this)">
+        <div class="tl-dot-col"><div class="tl-dot">
+          <!-- 1: Korean speech bubble with 가 -->
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <rect x="2" y="2" width="18" height="14" rx="4" fill="#6b3fa0"/>
+            <path d="M6 16 L4 21 L11 18" fill="#6b3fa0"/>
+            <text x="11" y="13" text-anchor="middle" font-size="9" fill="white" font-weight="bold" font-family="serif">가</text>
+            <circle cx="21" cy="6" r="4" fill="#c8e060"/>
+            <text x="21" y="9" text-anchor="middle" font-size="7" fill="#1c1420" font-weight="bold">✓</text>
+          </svg>
+        </div></div>
+        <div>
+          <div class="tl-card">
+            <div class="tl-time">3:00 PM — 3:40 PM · TheBox</div>
+            <div class="tl-name">Survival Korean Class</div>
+            <div class="tl-desc">Ice-breaking + 40 min of real, practical Korean you'll use today.</div>
+            <span class="tl-badge">⭐ START · FREE LESSON</span>
+            <div class="tl-detail"><div class="tl-detail-inner">Learn the <strong>3 mission phrases</strong> before you hit the market: how to ask prices, bargain, and compliment food. No experience needed — guaranteed fun.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-monorail reveal">
+        <div class="mono-photo-wrap">
+          <img src="img_monorail.jpg" alt="Daegu Line 3" class="mono-bg-photo">
+          <div class="mono-overlay-dark"></div>
+          <div class="mono-line-top">
+            <span class="mono-line-badge">🚝 DAEGU LINE 3</span>
+          </div>
+          <div class="mono-anim-row">
+            <div class="mono-st-label">반월당역<span>TheBox</span></div>
+            <div class="mono-anim-track">
+              <div class="mono-anim-rail"></div>
+              <div class="mono-anim-train" id="monoTrain">🚝</div>
+            </div>
+            <div class="mono-st-label right">서문시장역<span>Seomun</span></div>
+          </div>
+        </div>
+        <div class="mono-info">
+          <div class="mono-badge">🚝 Daegu Line 3 Monorail</div>
+          <p class="mono-desc">Ride Daegu's elevated monorail straight to Seomun Market — <strong>above the city streets</strong>, great views, only ~3 min. One of the most fun ways to travel in Korea!</p>
+          <div class="mono-facts">
+            <div class="mono-fact"><span class="mf-icon">🎫</span><div><strong>~₩1,500</strong><small>per ride</small></div></div>
+            <div class="mono-fact"><span class="mf-icon">🌆</span><div><strong>Elevated view</strong><small>above Daegu streets</small></div></div>
+            <div class="mono-fact"><span class="mf-icon">⚡</span><div><strong>Fully electric</strong><small>clean & quiet</small></div></div>
+          </div>
+          <button class="mono-btn" onclick="runTrain()">🚝 Ride the monorail!</button>
+        </div>
+      </div>
+
+      <div class="tl-item mission reveal delay-1" onclick="toggleTL(this)">
+        <div class="tl-dot-col"><div class="tl-dot">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M1 10 L7 7 L13 10 Z" fill="#ff6b4a"/>
+            <rect x="1" y="10" width="12" height="7" rx="1" fill="#fff3ef" stroke="#ff6b4a" stroke-width="0.8"/>
+            <path d="M13 10 L19 7 L25 10 Z" fill="#6b3fa0"/>
+            <rect x="13" y="10" width="12" height="7" rx="1" fill="#f5f0ff" stroke="#6b3fa0" stroke-width="0.8"/>
+            <circle cx="5" cy="15" r="2" fill="#ff6b4a" opacity="0.7"/>
+            <circle cx="9" cy="15" r="1.5" fill="#c8e060"/>
+            <circle cx="17" cy="15" r="1.5" fill="#9b6fd0" opacity="0.8"/>
+            <circle cx="21" cy="15" r="2" fill="#ff6b4a" opacity="0.6"/>
+            <line x1="0" y1="17" x2="26" y2="17" stroke="#6b3fa0" stroke-width="1"/>
+            <ellipse cx="13" cy="6" rx="2" ry="2.5" fill="#c8e060"/>
+            <line x1="13" y1="2" x2="13" y2="3.5" stroke="#6b3fa0" stroke-width="1"/>
+          </svg>
+        </div></div>
+        <div>
+          <div class="tl-card">
+            <div class="tl-time">3:45 PM — 4:45 PM · Stop 1</div>
+            <div class="tl-name">Seomun Market</div>
+            <div class="tl-desc">Daegu's massive 400-year-old market. Use your Korean to buy street food — this is the mission!</div>
+            <span class="tl-badge">🔥 MISSION · STREET FOOD</span>
+            <div class="tl-detail"><div class="tl-detail-inner">Must-try: <strong>납작만두</strong> (flat dumplings) · <strong>칼제비</strong> (hand-torn noodles) · <strong>씨앗호떡</strong> (seed pancake) · <strong>닭강정</strong> (sweet fried chicken). Speak Korean to complete your mission!</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-walk reveal">5 min walk to Gyesan Cathedral</div>
+
+      <div class="tl-item reveal delay-1" onclick="toggleTL(this)">
+        <div class="tl-dot-col"><div class="tl-dot">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <polygon points="5,14 7,2 9,14" fill="#6b3fa0"/>
+            <line x1="7" y1="0" x2="7" y2="3" stroke="#c8e060" stroke-width="1.5" stroke-linecap="round"/>
+            <polygon points="17,14 19,2 21,14" fill="#6b3fa0"/>
+            <line x1="19" y1="0" x2="19" y2="3" stroke="#c8e060" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="4" y="14" width="18" height="10" rx="1" fill="#9b6fd0"/>
+            <circle cx="13" cy="17" r="3" fill="none" stroke="#c8e060" stroke-width="1.2"/>
+            <circle cx="13" cy="17" r="1" fill="#c8e060"/>
+            <line x1="10" y1="17" x2="16" y2="17" stroke="#c8e060" stroke-width="0.8"/>
+            <line x1="13" y1="14" x2="13" y2="20" stroke="#c8e060" stroke-width="0.8"/>
+            <path d="M11 24 Q13 20 15 24" fill="#6b3fa0"/>
+            <line x1="2" y1="24" x2="24" y2="24" stroke="#c8e060" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div></div>
+        <div>
+          <div class="tl-card">
+            <div class="tl-time">4:55 PM — 5:30 PM · Stop 2</div>
+            <div class="tl-name">Gyesan Cathedral & Cheongna Hill</div>
+            <div class="tl-desc">100-year-old Gothic cathedral + the 3.1 Movement staircase & Western missionaries' brick homes. Best photo spot of the day.</div>
+            <span class="tl-badge">ARCHITECTURE · 1902</span>
+            <div class="tl-detail"><div class="tl-detail-inner">Inside: stained glass featuring <strong>figures in hanbok</strong> — a one-of-a-kind blend of East and West. Up the hill: red-brick missionary houses that feel like a different century.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-walk reveal">3 min walk to Yi Sang-hwa House</div>
+
+      <div class="tl-item reveal delay-1" onclick="toggleTL(this)">
+        <div class="tl-dot-col"><div class="tl-dot">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M2 13 Q6 6 13 8 Q20 6 24 13" stroke="#6b3fa0" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M4 13 Q6 7 13 9 Q20 7 22 13 Z" fill="#9b6fd0" opacity="0.3"/>
+            <path d="M1 13 L25 13" stroke="#6b3fa0" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="2" cy="12" r="1.5" fill="#c8e060"/>
+            <circle cx="24" cy="12" r="1.5" fill="#c8e060"/>
+            <rect x="6" y="13" width="14" height="9" rx="1" fill="#e8f5b0" stroke="#6b3fa0" stroke-width="1"/>
+            <rect x="11" y="17" width="4" height="5" rx="1" fill="#9b6fd0"/>
+            <rect x="7" y="15" width="3" height="3" rx="0.5" fill="#9b6fd0" opacity="0.5"/>
+            <rect x="16" y="15" width="3" height="3" rx="0.5" fill="#9b6fd0" opacity="0.5"/>
+          </svg>
+        </div></div>
+        <div>
+          <div class="tl-card">
+            <div class="tl-time">5:35 PM — 6:00 PM · Stop 3</div>
+            <div class="tl-name">Yi Sang-hwa & Seo Sang-don Houses</div>
+            <div class="tl-desc">Two perfectly preserved hanoks, once home to heroes of Korea's independence movement.</div>
+            <span class="tl-badge">HANOK · HISTORY</span>
+            <div class="tl-detail"><div class="tl-detail-inner">Yi Sang-hwa wrote <strong>"Even the Stolen Fields Have Spring"</strong> — a poem of resistance. Seo Sang-don funded Korea's independence army with his personal fortune. Two legends, side by side.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-walk reveal">Walk back through Dongseongno to TheBox</div>
+
+      <div class="tl-item finish reveal delay-1" onclick="toggleTL(this)">
+        <div class="tl-dot-col"><div class="tl-dot">
+          <!-- 6: Mission clear — shield with checkmark + trophy star burst -->
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <!-- starburst -->
+            <path d="M13 1 L14.5 5 L18.5 3 L17 7 L21 7 L18 10 L21 13 L17 13 L18.5 17 L14.5 15 L13 19 L11.5 15 L7.5 17 L9 13 L5 13 L8 10 L5 7 L9 7 L7.5 3 L11.5 5 Z" fill="#c8e060" opacity="0.6"/>
+            <!-- shield -->
+            <path d="M13 4 L20 7 L20 14 Q20 20 13 23 Q6 20 6 14 L6 7 Z" fill="#6b3fa0"/>
+            <path d="M13 6 L18 8.5 L18 14 Q18 19 13 21.5 Q8 19 8 14 L8 8.5 Z" fill="#9b6fd0"/>
+            <!-- checkmark -->
+            <path d="M9.5 13.5 L12 16 L17 10" stroke="#c8e060" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div></div>
+        <div>
+          <div class="tl-card">
+            <div class="tl-time">6:45 PM — 7:00 PM · Finish</div>
+            <div class="tl-name">Back to TheBox — Mission Check</div>
+            <div class="tl-desc">Return to HQ! We check missions together and every completer gets a surprise gift. 🎉</div>
+            <span class="tl-badge">🎊 MISSION CLEAR · GIFT</span>
+            <div class="tl-detail"><div class="tl-detail-inner">Show us your mission evidence, share your best moment, and receive your <strong>surprise gift</strong>. The perfect ending to your first Daegu adventure.</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SPOTS ════════════════ -->
+<section class="spots-section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-tag">📸 The Places</div>
+      <h2 class="sec-title">Where We're Going</h2>
+      <p class="sec-desc">Korean history, traditional medicine, colonial architecture, and the best street food in the city — all in one afternoon.</p>
+    </div>
+    <div class="spots-grid">
+      <div class="spot-card reveal delay-1">
+        <div class="spot-img">
+          <div class="spot-label">3 PM · START</div>
+          <img src="img_thebox2.jpg" alt="TheBox">
+        </div>
+        <div class="spot-body">
+          <div class="spot-name">TheBox Language School</div>
+          <div class="spot-desc">Ice-breaking + 40 min survival Korean. Leave ready to haggle, order, and impress locals.</div>
+        </div>
+      </div>
+      <div class="spot-card reveal delay-2" style="border-color:rgba(255,107,74,.25);">
+        <div class="spot-img">
+          <div class="spot-label" style="background:var(--coral);">🔥 MISSION</div>
+          <img src="img_seomun.jpg" alt="Seomun Market">
+        </div>
+        <div class="spot-body">
+          <div class="spot-name">Seomun Market <span style="font-size:10px;background:var(--coral);color:#fff;padding:2px 8px;border-radius:100px;font-weight:700;vertical-align:middle;margin-left:4px;">MISSION</span></div>
+          <div class="spot-desc">400-year-old market. Complete your Korean mission with real vendors. 납작만두, 칼제비, 씨앗호떡, 닭강정!</div>
+        </div>
+      </div>
+      <div class="spot-card reveal delay-3">
+        <div class="spot-img">
+          <div class="spot-label">Stop 2</div>
+          <img src="img_gyesan.jpg" alt="Gyesan Cathedral">
+        </div>
+        <div class="spot-body">
+          <div class="spot-name">Gyesan Cathedral & Cheongna Hill</div>
+          <div class="spot-desc">Gothic cathedral with hanbok stained glass + 3.1 Movement staircase. Best photo spot on the tour.</div>
+        </div>
+      </div>
+      <div class="spot-card reveal delay-4">
+        <div class="spot-img">
+          <div class="spot-label">Stop 3</div>
+          <img src="img_leesangwha.jpg" alt="Yi Sang-hwa House">
+        </div>
+        <div class="spot-body">
+          <div class="spot-name">Yi Sang-hwa & Seo Sang-don Houses</div>
+          <div class="spot-desc">Two beautifully preserved hanoks — home to Korea's independence heroes.</div>
+        </div>
+      </div>
+      <div class="spot-card reveal delay-5" style="border-color:var(--apple-d);background:linear-gradient(135deg,var(--apple),#f5ffd8);">
+        <div class="spot-img">
+          <div class="spot-label" style="background:var(--apple-d);color:var(--ink);">🎁 FINISH</div>
+          <img src="img_thebox1.jpg" alt="Back to TheBox">
+        </div>
+        <div class="spot-body">
+          <div class="spot-name">TheBox — Mission Check</div>
+          <div class="spot-desc">Back where it started! Mission review + surprise gift for every completer. 🎉</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ════════════════ PHOTO MOSAIC ════════════════ -->
+<section class="mosaic-section">
+  <div style="max-width:860px;margin:0 auto;">
+    <div class="mosaic-text reveal-left">
+      <div class="section-tag">🍢 Street Food</div>
+      <h2>Seomun Market<br><em>must-eats.</em></h2>
+      <p style="margin-top:16px;">400 years old and still the most alive place in Daegu. Buy these with the Korean you learned at TheBox — that's your mission.</p>
+      <div style="margin-top:28px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
+        <div style="border-radius:12px;overflow:hidden;position:relative;aspect-ratio:2/3;">
+          <img src="img_mandu.jpg" alt="납작만두" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,32,.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:10px;">
+            <strong style="color:#fff;font-size:13px;">납작만두</strong>
+            <span style="color:rgba(255,255,255,.6);font-size:10px;">Flat dumplings</span>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;position:relative;aspect-ratio:2/3;">
+          <img src="img_hotteok.jpg" alt="씨앗호떡" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,32,.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:10px;">
+            <strong style="color:#fff;font-size:13px;">씨앗호떡</strong>
+            <span style="color:rgba(255,255,255,.6);font-size:10px;">Seed pancake</span>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;position:relative;aspect-ratio:2/3;">
+          <img src="img_kaljebi.jpg" alt="칼제비" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,32,.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:10px;">
+            <strong style="color:#fff;font-size:13px;">칼제비</strong>
+            <span style="color:rgba(255,255,255,.6);font-size:10px;">Hand-torn noodles</span>
+          </div>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;position:relative;aspect-ratio:2/3;">
+          <img src="img_dakgangjung.jpg" alt="닭강정" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,32,.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:10px;">
+            <strong style="color:#fff;font-size:13px;">닭강정</strong>
+            <span style="color:rgba(255,255,255,.6);font-size:10px;">Sweet fried chicken</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ WHY JOIN? ════════════════ -->
+<section class="interest-section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-tag">✨ Why Join?</div>
+      <h2 class="sec-title">Three reasons you'll<br>be glad you came.</h2>
+    </div>
+    <div class="interest-grid">
+      <div class="int-card c1 reveal delay-1">
+        <div class="int-num">01</div>
+        <div class="int-icon">🗣</div>
+        <div class="int-title">Actually speak Korean — today</div>
+        <div class="int-desc">No boring grammar class. In 40 minutes you'll learn exactly what you need to order food, bargain at the market, and make locals laugh. Then you go use it — for real.</div>
+        <span class="int-tag">SURVIVAL KOREAN</span>
+      </div>
+      <div class="int-card c2 reveal delay-2">
+        <div class="int-num">02</div>
+        <div class="int-icon">🚝</div>
+        <div class="int-title">Ride the monorail above Daegu</div>
+        <div class="int-desc">Daegu's Line 3 is one of the few elevated monorails in Korea. One stop above the city streets gives you a view most people never see. It's not just transport — it's an experience.</div>
+        <span class="int-tag">DAEGU LINE 3</span>
+      </div>
+      <div class="int-card c3 reveal delay-3">
+        <div class="int-num">03</div>
+        <div class="int-icon">🎯</div>
+        <div class="int-title">It's a mission, not just a tour</div>
+        <div class="int-desc">You're not just walking around — you have missions to complete at Seomun Market. Use your Korean to buy street food, haggle, and compliment vendors. Finish all 3 and win a surprise gift.</div>
+        <span class="int-tag">MISSION SYSTEM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ INCLUDED ════════════════ -->
+<section class="included-section">
+  <div style="max-width:960px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-tag">💡 What's Included</div>
+      <h2 class="sec-title">Totally free.<br>Here's what that means.</h2>
+      <p class="sec-desc">The tour and lesson are on us. A few things during the day are your own call — completely optional.</p>
+    </div>
+    <div class="inc-grid">
+      <div class="inc-card free reveal-left delay-1">
+        <div class="inc-head"><div class="inc-emoji">🎁</div><div><div class="inc-title">Included — Free!</div><div class="inc-subtitle">Zero cost, zero catch</div></div></div>
+        <ul class="inc-items">
+          <li data-ico="🇰🇷">Survival Korean class (40 min)</li>
+          <li data-ico="🗺️">Full guided walking tour</li>
+          <li data-ico="🎟️">All tour entry & guide fees</li>
+          <li data-ico="🎁">Surprise gift (mission completers)</li>
+        </ul>
+      </div>
+      <div class="inc-card own reveal-right delay-1">
+        <div class="inc-head"><div class="inc-emoji">💳</div><div><div class="inc-title">Your Own Expense</div><div class="inc-subtitle">Optional — totally up to you</div></div></div>
+        <ul class="inc-items">
+          <li data-ico="🚌">Bus / monorail fare (~₩1,500)</li>
+          <li data-ico="🍜">Meals, snacks & drinks</li>
+          <li data-ico="🛍️">Anything you buy at the market</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ REGISTER ════════════════ -->
+<section class="register-section" id="register">
+  <div style="position:relative;z-index:1;">
+    <div class="section-tag reveal">🙋 Join the Tour</div>
+    <div class="seats-counter reveal">
+      <div class="seats-num" id="seatsNum">10</div>
+      <div class="seats-label"><strong>Spots Left</strong>Round 2 · First come, first served</div>
+    </div>
+    <p class="reg-headline reveal">Only <em>10 spots.</em><br>All free.</p>
+    <p class="reg-sub reveal">Round 1 filled up fast — drop your name and we'll confirm your spot.</p>
+    <div class="event-strips">
+      <div class="e-strip reveal delay-1"><div class="ev">📅</div><strong>March 29, 2026</strong><small>Sunday</small></div>
+      <div class="e-strip reveal delay-2"><div class="ev">🕒</div><strong>3:00 PM – 7:00 PM</strong><small>Meet at TheBox</small></div>
+      <div class="e-strip reveal delay-3"><div class="ev">👥</div><strong>10 Spots Max</strong><small>First come, first served</small></div>
+      <div class="e-strip reveal delay-4"><div class="ev">🆓</div><strong>Free to Join</strong><small>Tour + Korean lesson</small></div>
+    </div>
+    <div class="reg-form reveal">
+      <input class="reg-input" type="text" id="regName" placeholder="Your name · 이름">
+      <input class="reg-input" type="text" id="regKakao" placeholder="KakaoTalk ID">
+      <input class="reg-input" type="tel" id="regPhone" placeholder="Phone number · 전화번호">
+      <button class="reg-submit" id="regBtn" onclick="handleSignup()">Count me in! →</button>
+    </div>
+    <p class="reg-footnote reveal">
+      📍 Meeting point: <strong>TheBox, Dongseongno 3(sam)-ga, 90-1</strong> (exact address on confirmation)<br>
+      👟 Wear comfy shoes · 💵 Bring a little cash for snacks · 🧠 Bring an open mind!
+    </p>
+  </div>
+</section>
+
+<footer>
+  <strong>Walk Daegu</strong> &nbsp;·&nbsp;
+  TheBox → Seomun Market → Gyesan Cathedral → Yi Sang-hwa House → Dongseongno → TheBox
+  &nbsp;·&nbsp; March 29, 2026 · 3–7 PM · Round 2
+</footer>
+
+<script>
+  // ── Progress bar ──
+  const bar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  // ── Nav shadow on scroll ──
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+  // ── Timeline accordion ──
+  function toggleTL(item) {
+    const wasActive = item.classList.contains('active');
+    document.querySelectorAll('.tl-item').forEach(i => i.classList.remove('active'));
+    if (!wasActive) item.classList.add('active');
+  }
+
+  // ── Monorail animation ──
+  function runTrain() {
+    const train = document.getElementById('monoTrain');
+    train.style.animation = 'none';
+    train.classList.remove('zoom');
+    void train.offsetWidth;
+    train.classList.add('zoom');
+    setTimeout(() => {
+      train.classList.remove('zoom');
+      train.style.animation = '';
+    }, 900);
+  }
+  // ── Google Sheets URL — 여기에 붙여넣으세요 ──
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbynsr73Ik2BY3s9ek9P_pA4gksoxghplJRHDGg_5YF12OqYIlE1VcDWW9NshnLXxFVzhA/exec';
+
+  let seats = 10;
+
+  function handleSignup() {
+    const name    = document.getElementById('regName').value.trim();
+    const kakao   = document.getElementById('regKakao').value.trim();
+    const phone   = document.getElementById('regPhone').value.trim();
+    const btn     = document.getElementById('regBtn');
+
+    // 유효성 검사
+    const fields = ['regName', 'regKakao', 'regPhone'];
+    let valid = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = 'var(--coral)';
+        valid = false;
+        setTimeout(() => el.style.borderColor = '', 1400);
+      }
+    });
+    if (!valid) return;
+
+    // 로딩 상태
+    btn.textContent = '⏳ Sending...';
+    btn.disabled = true;
+
+    // Google Sheets 전송
+    const params = new URLSearchParams({ name, kakao, phone,
+      timestamp: new Date().toLocaleString('ko-KR', {timeZone:'Asia/Seoul'}) });
+
+    // Google Sheets 전송 — Image beacon (가장 확실한 CORS 우회)
+    const getUrl = SHEET_URL + '?' + params.toString();
+    new Image().src = getUrl;
+
+    setTimeout(() => {
+      seats = Math.max(0, seats - 1);
+      document.getElementById('seatsNum').textContent = seats;
+      btn.textContent = '✅ You\'re in!';
+      btn.classList.add('success');
+      document.getElementById('regName').value = '';
+      document.getElementById('regKakao').value = '';
+      document.getElementById('regPhone').value = '';
+      if (seats === 0) btn.textContent = '🔒 Fully Booked!';
+    }, 800);
+  }
+</script>
+</body>
+</html>
